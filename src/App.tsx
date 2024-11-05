@@ -3,19 +3,35 @@ import Spline from "@splinetool/react-spline";
 import styles from "./App.module.scss";
 import Blob from "./components/Blob/Blob";
 import logo from "./assets/logo.png";
+
+/** Interface representing coordinates with x and y values */
 interface ICoords {
   x: number;
   y: number;
 }
 
+/** Props interface for the App component */
 interface IAppProps {
   children: React.ReactNode;
 }
 
+/**
+ * Main App component that renders the application layout with interactive background effects.
+ * Includes an interactive bubble that follows mouse movement, gradient blobs, and a 3D Spline object.
+ * 
+ * @param props - Component props
+ * @param props.children - Child elements to render within the component
+ * @returns React component
+ */
 const App: React.FC<IAppProps> = ({ children }) => {
   const [targetCoord, setTargetCoor] = useState<ICoords>({ x: 0, y: 0 });
   const [curCoord, setCurCoord] = useState<ICoords>({ x: 0, y: 0 });
   const interBubbleRef = useRef<HTMLDivElement>(null);
+
+  /**
+   * Animates the interactive bubble movement using requestAnimationFrame
+   * Calculates new position based on current and target coordinates
+   */
   const move = () => {
     setCurCoord({
       x: curCoord.x + (targetCoord.x - curCoord.x) / 2,
@@ -31,6 +47,10 @@ const App: React.FC<IAppProps> = ({ children }) => {
     });
   };
 
+  /**
+   * Handles mouse movement events and updates target coordinates
+   * @param event - Mouse event containing cursor position
+   */
   const handleMouseMove = (event: MouseEvent) => {
     setTargetCoor({ x: event.clientX, y: event.clientY });
   };

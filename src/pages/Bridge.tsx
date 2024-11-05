@@ -15,8 +15,19 @@ import { ethers } from "ethers";
 import bridgeAbi from "../abi/diamond.json";
 import erc20Abi from "../abi/erc20.json";
 
+/**
+ * Bridge component that enables cross-chain token transfers.
+ * Handles token locking, burning, and approval operations between different blockchain networks.
+ * 
+ * Features:
+ * - Network selection for source and destination chains
+ * - Token selection and amount input
+ * - Transaction processing with approval and transfer steps
+ * - Transfer history display with pagination
+ * 
+ * @returns A page component with bridge functionality and transfer history
+ */
 const Bridge: FC = () => {
-  // State hooks
   const [networks, setNetworks] = useState<Map<number, Network>>(
     new Map<number, Network>()
   );
@@ -34,10 +45,12 @@ const Bridge: FC = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [totalPages, setTotalPages] = useState<number>(1);
-  // wagmi hooks
   const { isConnected } = useAccount();
   const metamaskChainId = useChainId();
-  // effect hooks
+  /**
+   * Fetches initial data including networks, tokens, and transfer history.
+   * Updates state with the fetched data and handles loading/error states.
+   */
   useEffect(() => {
     resetState();
 
@@ -121,6 +134,10 @@ const Bridge: FC = () => {
     setIsLoading(false);
   };
 
+  /**
+   * Handles the burning of wrapped tokens for cross-chain transfer.
+   * @throws {Error} If the burn operation fails or required parameters are missing
+   */
   const handleBurn = async () => {
     if (!selectedToken || !destinationChain || !amount || !window.ethereum) {
       return;
@@ -154,6 +171,10 @@ const Bridge: FC = () => {
     }
   };
 
+  /**
+   * Handles token approval for the bridge contract.
+   * @throws {Error} If the approval operation fails or required parameters are missing
+   */
   const handleApprove = async () => {
     if (!selectedToken || !window.ethereum) {
       return;
@@ -183,6 +204,10 @@ const Bridge: FC = () => {
     }
   };
 
+  /**
+   * Handles locking of native tokens for cross-chain transfer.
+   * @throws {Error} If the lock operation fails or required parameters are missing
+   */
   const handleLock = async () => {
     if (!selectedToken || !destinationChain || !amount || !window.ethereum) {
       return;
@@ -216,6 +241,10 @@ const Bridge: FC = () => {
     }
   };
 
+  /**
+   * Initiates the transfer process, including approval and either lock or burn operations.
+   * Handles error states and success notifications.
+   */
   const handleTransfer = async () => {
     if (!selectedToken || !destinationChain || !amount || !window.ethereum) {
       return;
@@ -262,6 +291,10 @@ const Bridge: FC = () => {
     }
   };
 
+  /**
+   * Checks if the transfer button should be enabled based on current state.
+   * @returns {boolean} True if transfer is enabled, false otherwise
+   */
   const isTransferEnabled = () => {
     return (
       !isLoading &&
@@ -274,6 +307,11 @@ const Bridge: FC = () => {
     );
   };
 
+  /**
+   * Retrieves the minimum bridgeable amount from the bridge contract.
+   * @returns {Promise<number>} The minimum amount that can be bridged
+   * @throws {Error} If the operation fails or no provider is available
+   */
   const getMinBridgeableAmount = async () => {
     if (!window.ethereum) {
       throw new Error("No ethereum provider found");

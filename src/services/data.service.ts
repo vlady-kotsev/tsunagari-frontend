@@ -1,8 +1,17 @@
 import { Transfer, Network, Token, PaginatedResponse } from "./interfaces";
 
+/**
+ * Service class for handling data operations related to fetching transfers, networks, and tokens.
+ */
 export class DataService {
   private readonly HTTP_BASE_URL: string = "/api";
 
+  /**
+   * Retrieves a paginated list of transfers.
+   * @param page - The page number to retrieve.
+   * @returns A promise that resolves to a paginated response containing transfer data.
+   * @throws Error if the API request fails.
+   */
   async getAllTransfers(page: number): Promise<PaginatedResponse<Transfer>> {
     try {
       const url = `${this.HTTP_BASE_URL}/transactions?page=${page}&limit=10`;
@@ -23,6 +32,11 @@ export class DataService {
     }
   }
 
+  /**
+   * Retrieves a list of all available networks.
+   * @returns A promise that resolves to a paginated response containing network data.
+   * @throws Error if the API request fails.
+   */
   async getAllNetworks(): Promise<PaginatedResponse<Network>> {
     try {
       const url = `${this.HTTP_BASE_URL}/networks`;
@@ -44,6 +58,11 @@ export class DataService {
     }
   }
 
+  /**
+   * Retrieves a list of all available tokens.
+   * @returns A promise that resolves to a paginated response containing token data.
+   * @throws Error if the API request fails.
+   */
   async getAllTokens(): Promise<PaginatedResponse<Token>> {
     try {
       const url = `${this.HTTP_BASE_URL}/tokens`;

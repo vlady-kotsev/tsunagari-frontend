@@ -6,23 +6,48 @@ import { AiFillRightCircle } from "react-icons/ai";
 import { AiFillLeftCircle } from "react-icons/ai";
 import ReactPaginate from "react-paginate";
 import { IconContext } from "react-icons";
+
+/** Props for the Table component */
 interface TableProps {
+  /** Array of transfer records to display */
   transfers: Transfer[];
+  /** Total number of pages available */
   totalPages: number;
+  /** Function to update the current page number */
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
 }
 
+/**
+ * Table component that displays transfer records with pagination.
+ * Allows copying of addresses and displays transaction details.
+ * 
+ * @param props - Component properties
+ * @param props.transfers - Array of transfer records to display
+ * @param props.totalPages - Total number of pages available
+ * @param props.setCurrentPage - Function to update the current page number
+ * @returns A table with transfer records and pagination controls
+ */
 const Table: FC<TableProps> = ({ transfers, totalPages, setCurrentPage }) => {
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
-  const shortFormatAddress = (address: string) => {
+  /**
+   * Formats an address to show only the first 6 and last 4 characters
+   * @param address - The full address to format
+   * @returns The shortened address string
+   */
+  const shortFormatAddress = (address: string): string => {
     return `${address.slice(0, 6)}...${address.slice(-4)}`;
   };
 
+  /**
+   * Handles copying text to clipboard when a cell is clicked
+   * @param e - The click event
+   * @param text - The text to copy
+   */
   const handleCopy = async (
     e: React.MouseEvent<HTMLTableCellElement>,
     text: string
-  ) => {
+  ): Promise<void> => {
     try {
       const element = e.target as HTMLElement;
 

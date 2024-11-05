@@ -2,11 +2,22 @@ import KUTE from "kute.js";
 import { useEffect } from "react";
 import styles from "./Blob.module.scss";
 
+/** Props interface for the Blob component */
 interface IBlobProps {
+  /** Hex primary color code */
   color1: string;
+  /** Hex secondary color code */
   color2: string;
 }
 
+/**
+ * A component that renders an animated SVG blob using KUTE.js for morphing animation.
+ * Creates a continuous morphing effect between two different blob shapes.
+ * 
+ * @param color1 - Hex primary color code
+ * @param color2 - Hex secondary color code
+ * @returns An SVG container with animated blob shapes
+ */
 const Blob: React.FC<IBlobProps> = ({ color1, color2 }) => {
   useEffect(() => {
     const tween = KUTE.fromTo(
