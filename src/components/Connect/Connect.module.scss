@@ -1,0 +1,29 @@
+.connect {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0;
+
+  width: 100%;
+  justify-content: flex-end;
+}
+
+
+.button {
+  background: rgba(255, 0, 0, 0.2);
+  color: rgb(251, 77, 218);
+  border: 3px solid rgb(141, 176, 240);
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+  font-family: "Silkscreen", serif !important;
+  margin: 0;
+
+  &:hover{
+    background-color: rgba(57, 255, 20, 0.1);
+    color: rgb(102, 226, 255);
+    scale: 1.05;
+  }
+} 

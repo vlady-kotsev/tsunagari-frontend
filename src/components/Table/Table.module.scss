@@ -1,0 +1,85 @@
+.tableContainer {
+  width: 70%;
+  height: 80%;
+  border-radius: 8px;
+  background: rgba(141, 176, 240, 0.1);
+  margin-top: 12px;
+  overflow-x: hidden; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid rgba(141, 176, 240, 0.2);
+    cursor:crosshair;
+  }
+
+  th {
+    background: rgba(141, 176, 240, 0.15);
+    color: rgb(141, 176, 240);
+    font-weight: 600;
+    font-family: "Silkscreen", serif !important;
+  }
+
+  tr {
+    &:hover {
+      background: rgba(251, 77, 218, 0.05);
+      
+      td {
+        color: rgb(102, 226, 255);
+      }
+    }
+  }
+
+  td {
+    color: rgb(251, 77, 218);
+    transition: color 0.2s ease;
+    font-family: "Silkscreen", serif !important;
+  }
+}
+
+.pagination {
+  position: absolute;
+  bottom: 0;
+  width: 20%;
+  z-index: 11;
+  list-style: none;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2px;
+  cursor: pointer;
+
+  & li {
+    font-size: 2rem !important;
+    font-family: "Silkscreen", serif !important;
+    color: rgb(141, 176, 240);
+  }
+}
+
+.active {
+  background-color: rgb(251, 77, 218);
+  
+  color: white;
+}
+
+.page-item {
+  list-style: none;
+  padding: 2px 12px;
+  height: 31.5px;
+  width: 31.5px;
+  display: flex;
+  font-size: 2rem;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2px;
+  font-size: 4rem !important;
+}
