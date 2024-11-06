@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import Spline from "@splinetool/react-spline";
 import styles from "./App.module.scss";
 import Blob from "./components/Blob/Blob";
@@ -18,51 +18,57 @@ interface IAppProps {
 /**
  * Main App component that renders the application layout with interactive background effects.
  * Includes an interactive bubble that follows mouse movement, gradient blobs, and a 3D Spline object.
- * 
- * @param props - Component props
- * @param props.children - Child elements to render within the component
+ *
+ * @param children - Child elements to render within the component
  * @returns React component
  */
 const App: React.FC<IAppProps> = ({ children }) => {
-  const [targetCoord, setTargetCoor] = useState<ICoords>({ x: 0, y: 0 });
-  const [curCoord, setCurCoord] = useState<ICoords>({ x: 0, y: 0 });
+  const [mousePosition, setMousePosition] = useState<ICoords>({ x: 0, y: 0 });
   const interBubbleRef = useRef<HTMLDivElement>(null);
-
-  /**
-   * Animates the interactive bubble movement using requestAnimationFrame
-   * Calculates new position based on current and target coordinates
-   */
-  const move = () => {
-    setCurCoord({
-      x: curCoord.x + (targetCoord.x - curCoord.x) / 2,
-      y: curCoord.y + (targetCoord.y - curCoord.y) / 2,
-    });
-    if (interBubbleRef.current) {
-      interBubbleRef.current.style.transform = `translate(${Math.round(
-        curCoord.x
-      )}px, ${Math.round(curCoord.y)}px)`;
-    }
-    requestAnimationFrame(() => {
-      move();
-    });
-  };
+  const animationFrameId = useRef<number>();
+  const currentPosition = useRef<ICoords>({ x: 0, y: 0 });
 
   /**
    * Handles mouse movement events and updates target coordinates
-   * @param event - Mouse event containing cursor position
    */
-  const handleMouseMove = (event: MouseEvent) => {
-    setTargetCoor({ x: event.clientX, y: event.clientY });
-  };
+  const handleMouseMove = useCallback((event: MouseEvent) => {
+    setMousePosition({ x: event.clientX, y: event.clientY });
+  }, []);
+
+  /**
+   * Handles the animation frame updates
+   */
+  useEffect(() => {
+    if (!interBubbleRef.current) {
+      return;
+    }
+
+    const animate = () => {
+      currentPosition.current = {
+        x: currentPosition.current.x + (mousePosition.x - currentPosition.current.x) * 0.1,
+        y: currentPosition.current.y + (mousePosition.y - currentPosition.current.y) * 0.1
+      };
+
+      interBubbleRef.current!.style.transform = `translate(${Math.round(
+        currentPosition.current.x
+      )}px, ${Math.round(currentPosition.current.y)}px)`;
+      
+      animationFrameId.current = requestAnimationFrame(animate);
+    };
+
+    animationFrameId.current = requestAnimationFrame(animate);
+
+    return () => {
+      if (animationFrameId.current) {
+        cancelAnimationFrame(animationFrameId.current);
+      }
+    };
+  }, [mousePosition.x, mousePosition.y]);
 
   useEffect(() => {
     window.addEventListener("mousemove", handleMouseMove);
-    move();
-
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-    };
-  }, [targetCoord]);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, [handleMouseMove]);
 
   return (
     <>
