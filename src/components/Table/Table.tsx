@@ -20,7 +20,7 @@ interface TableProps {
 /**
  * Table component that displays transfer records with pagination.
  * Allows copying of addresses and displays transaction details.
- * 
+ *
  * @param props - Component properties
  * @param props.transfers - Array of transfer records to display
  * @param props.totalPages - Total number of pages available
@@ -116,24 +116,26 @@ const Table: FC<TableProps> = ({ transfers, totalPages, setCurrentPage }) => {
           ))}
         </tbody>
       </table>
-      <ReactPaginate
-        containerClassName={styles.pagination}
-        pageClassName={styles.pageItem}
-        activeClassName={styles.active}
-        onPageChange={(event) => setCurrentPage(event.selected)}
-        pageCount={totalPages}
-        breakLabel="..."
-        previousLabel={
-          <IconContext.Provider value={{ size: "36px" }}>
-            <AiFillLeftCircle />
-          </IconContext.Provider>
-        }
-        nextLabel={
-          <IconContext.Provider value={{ size: "36px" }}>
-            <AiFillRightCircle />
-          </IconContext.Provider>
-        }
-      />
+      {transfers.length > 10 && (
+        <ReactPaginate
+          containerClassName={styles.pagination}
+          pageClassName={styles.pageItem}
+          activeClassName={styles.active}
+          onPageChange={(event) => setCurrentPage(event.selected)}
+          pageCount={totalPages}
+          breakLabel="..."
+          previousLabel={
+            <IconContext.Provider value={{ size: "36px" }}>
+              <AiFillLeftCircle />
+            </IconContext.Provider>
+          }
+          nextLabel={
+            <IconContext.Provider value={{ size: "36px" }}>
+              <AiFillRightCircle />
+            </IconContext.Provider>
+          }
+        />
+      )}
     </div>
   );
 };
