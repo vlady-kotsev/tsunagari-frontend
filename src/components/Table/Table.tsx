@@ -116,7 +116,7 @@ const Table: FC<TableProps> = ({ transfers, totalPages, setCurrentPage }) => {
           ))}
         </tbody>
       </table>
-      {transfers.length > 10 && (
+      {totalPages > 1 && (
         <ReactPaginate
           containerClassName={styles.pagination}
           pageClassName={styles.pageItem}
