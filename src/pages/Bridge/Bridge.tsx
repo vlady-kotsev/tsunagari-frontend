@@ -1,19 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import styles from "./Bridge.module.scss";
-import { DataService } from "../services/data.service";
+import { DataService } from "../../services/data.service";
 import { useEffect, useState, FC } from "react";
-import { Network, Token, Transfer } from "../services/interfaces";
-import Table from "../components/Table/Table";
-import { Connect } from "../components/Connect/Connect";
+import { Network, Token, Transfer } from "../../services/interfaces";
+import Table from "../../components/Table/Table";
+import { Connect } from "../../components/Connect/Connect";
 import { useAccount, useChainId } from "wagmi";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { notifyError, notifySuccess } from "../toastr";
+import { notifyError, notifySuccess } from "../../toastr";
 import { ethers } from "ethers";
 
-import bridgeAbi from "../abi/diamond.json";
-import erc20Abi from "../abi/erc20.json";
+import bridgeAbi from "../../abi/diamond.json";
+import erc20Abi from "../../abi/erc20.json";
 
 /**
  * Bridge component that enables cross-chain token transfers.
